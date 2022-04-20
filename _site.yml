@@ -1,0 +1,16 @@
+name: "example-website"
+navbar: 
+  title: "This is an example!"
+  left: 
+    - text: "Home"
+      href: index.html
+    - text: "Analysis"
+      href: analysis.html
+  right: 
+    - icon: fa-github fa-lg
+      href: https://github.com/cchaliki
+    - text: "Find Me on LinkedIn"
+      href: http:linkedin/catherinechalikian
+output:
+  html_document:
+    theme: flatly

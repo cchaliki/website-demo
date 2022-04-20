@@ -1,0 +1,1756 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Catherine Chalikian" />
+
+
+<title>Analysis</title>
+
+<script src="site_libs/header-attrs-2.10/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">This is an example!</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="analysis.html">Analysis</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/cchaliki">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="http:linkedin/catherinechalikian">Find Me on LinkedIn</a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Analysis</h1>
+<h4 class="author">Catherine Chalikian</h4>
+<h4 class="date">4/20/2022</h4>
+
+</div>
+
+
+<pre class="r"><code>library(tidyverse)
+library(smd)
+library(survey)
+library(gtsummary)
+library(ggplot2)
+library(broom)</code></pre>
+<div id="background" class="section level2">
+<h2>Background</h2>
+<p>You were contacted by the Coffee Company to assess whether people who live in Coffee Town consume more coffee than a neighboring town. The Coffee Company provided you with the following DAG to describe their assumed relationship between variables they have collected between the two towns. They think that smokers are more likely to live in the Coffee Town, they think more people with difficult jobs live in Coffee Town, and they think that age also predicts which town you live in. Additionally, they suspect that age, whether you smoke, and the difficulty of your job influences the number of cups of coffee and individual drinks. They’ve asked you to calculate the average causal effect for the “equipoise” population, that is the population of individuals who reasonably could live in either town.</p>
+</div>
+<div id="exercise-1" class="section level2">
+<h2>Exercise 1</h2>
+<div id="read-in-the-coffee_town_df.csv-data-frame.-describe-the-data-what-are-the-columns-how-many-observations-how-many-in-the-exposed-group-any-missing-data-etc." class="section level3">
+<h3>Read in the coffee_town_df.csv data frame. Describe the data (what are the columns, how many observations, how many in the exposed group, any missing data? etc.)</h3>
+<pre class="r"><code>ctdata = read.csv(&quot;coffee_town_df-copy.csv&quot;)
+colnames(ctdata)</code></pre>
+<pre><code>## [1] &quot;coffee_town&quot;    &quot;cups_of_coffee&quot; &quot;age&quot;            &quot;job&quot;           
+## [5] &quot;smoke&quot;</code></pre>
+<pre class="r"><code>length(ctdata[,1])</code></pre>
+<pre><code>## [1] 1100</code></pre>
+<pre class="r"><code>dim(ctdata)</code></pre>
+<pre><code>## [1] 1100    5</code></pre>
+<pre class="r"><code>length(filter(ctdata, coffee_town ==1)[,1])</code></pre>
+<pre><code>## [1] 113</code></pre>
+<p>We have a dataframe of 1100 observations with 5 variables each. We have captured whether the individual lives in Coffee Town (“coffee_town”), the number of cups of coffee that the individual drinks per day (“cups_of_coffee”), the age of the individual (“age”), the level of difficulty of the individual’s job (“job”), and whether the individual smokes (“smokes”). There are 113 individuals in the exposure, so 113 who live in Coffee Town.</p>
+</div>
+</div>
+<div id="exercise-2" class="section level2">
+<h2>Exercise 2</h2>
+<div id="create-an-unweighted-table-1-by-exposure-group-for-these-data.-describe-what-you-see." class="section level3">
+<h3>Create an unweighted Table 1 by exposure group for these data. Describe what you see.</h3>
+<pre class="r"><code>table1 = ctdata %&gt;% tbl_summary(
+  by = coffee_town,
+  #include = c(&quot;cups_of_coffee&quot;, &quot;age&quot;, &quot;job&quot;, &quot;smokes&quot;
+  ) %&gt;%
+    add_overall()
+
+table1</code></pre>
+<div id="ysqktcivjo" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#ysqktcivjo .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#ysqktcivjo .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#ysqktcivjo .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#ysqktcivjo .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#ysqktcivjo .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ysqktcivjo .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#ysqktcivjo .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#ysqktcivjo .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#ysqktcivjo .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#ysqktcivjo .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#ysqktcivjo .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#ysqktcivjo .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#ysqktcivjo .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#ysqktcivjo .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#ysqktcivjo .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#ysqktcivjo .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#ysqktcivjo .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ysqktcivjo .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#ysqktcivjo .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#ysqktcivjo .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ysqktcivjo .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#ysqktcivjo .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#ysqktcivjo .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ysqktcivjo .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ysqktcivjo .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#ysqktcivjo .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#ysqktcivjo .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ysqktcivjo .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#ysqktcivjo .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ysqktcivjo .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#ysqktcivjo .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ysqktcivjo .gt_left {
+  text-align: left;
+}
+
+#ysqktcivjo .gt_center {
+  text-align: center;
+}
+
+#ysqktcivjo .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#ysqktcivjo .gt_font_normal {
+  font-weight: normal;
+}
+
+#ysqktcivjo .gt_font_bold {
+  font-weight: bold;
+}
+
+#ysqktcivjo .gt_font_italic {
+  font-style: italic;
+}
+
+#ysqktcivjo .gt_super {
+  font-size: 65%;
+}
+
+#ysqktcivjo .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 75%;
+  vertical-align: 0.4em;
+}
+
+#ysqktcivjo .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#ysqktcivjo .gt_slash_mark {
+  font-size: 0.7em;
+  line-height: 0.7em;
+  vertical-align: 0.15em;
+}
+
+#ysqktcivjo .gt_fraction_numerator {
+  font-size: 0.6em;
+  line-height: 0.6em;
+  vertical-align: 0.45em;
+}
+
+#ysqktcivjo .gt_fraction_denominator {
+  font-size: 0.6em;
+  line-height: 0.6em;
+  vertical-align: -0.05em;
+}
+</style>
+<table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1"><strong>Characteristic</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"><strong>Overall</strong>, N = 1,100<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"><strong>0</strong>, N = 987<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"><strong>1</strong>, N = 113<sup class="gt_footnote_marks">1</sup></th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_left">cups_of_coffee</td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">0</td>
+<td class="gt_row gt_center">92 (8.4%)</td>
+<td class="gt_row gt_center">43 (4.4%)</td>
+<td class="gt_row gt_center">49 (43%)</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">1</td>
+<td class="gt_row gt_center">104 (9.5%)</td>
+<td class="gt_row gt_center">104 (11%)</td>
+<td class="gt_row gt_center">0 (0%)</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">2</td>
+<td class="gt_row gt_center">461 (42%)</td>
+<td class="gt_row gt_center">461 (47%)</td>
+<td class="gt_row gt_center">0 (0%)</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">3</td>
+<td class="gt_row gt_center">352 (32%)</td>
+<td class="gt_row gt_center">350 (35%)</td>
+<td class="gt_row gt_center">2 (1.8%)</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">4</td>
+<td class="gt_row gt_center">86 (7.8%)</td>
+<td class="gt_row gt_center">29 (2.9%)</td>
+<td class="gt_row gt_center">57 (50%)</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">5</td>
+<td class="gt_row gt_center">4 (0.4%)</td>
+<td class="gt_row gt_center">0 (0%)</td>
+<td class="gt_row gt_center">4 (3.5%)</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">6</td>
+<td class="gt_row gt_center">1 (&lt;0.1%)</td>
+<td class="gt_row gt_center">0 (0%)</td>
+<td class="gt_row gt_center">1 (0.9%)</td></tr>
+    <tr><td class="gt_row gt_left">age</td>
+<td class="gt_row gt_center">39 (34, 44)</td>
+<td class="gt_row gt_center">39 (34, 43)</td>
+<td class="gt_row gt_center">49 (14, 52)</td></tr>
+    <tr><td class="gt_row gt_left">job</td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">easy</td>
+<td class="gt_row gt_center">760 (69%)</td>
+<td class="gt_row gt_center">707 (72%)</td>
+<td class="gt_row gt_center">53 (47%)</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">hard</td>
+<td class="gt_row gt_center">212 (19%)</td>
+<td class="gt_row gt_center">200 (20%)</td>
+<td class="gt_row gt_center">12 (11%)</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">none</td>
+<td class="gt_row gt_center">128 (12%)</td>
+<td class="gt_row gt_center">80 (8.1%)</td>
+<td class="gt_row gt_center">48 (42%)</td></tr>
+    <tr><td class="gt_row gt_left">smoke</td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">current</td>
+<td class="gt_row gt_center">55 (5.0%)</td>
+<td class="gt_row gt_center">53 (5.4%)</td>
+<td class="gt_row gt_center">2 (1.8%)</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">former</td>
+<td class="gt_row gt_center">64 (5.8%)</td>
+<td class="gt_row gt_center">60 (6.1%)</td>
+<td class="gt_row gt_center">4 (3.5%)</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">never</td>
+<td class="gt_row gt_center">981 (89%)</td>
+<td class="gt_row gt_center">874 (89%)</td>
+<td class="gt_row gt_center">107 (95%)</td></tr>
+  </tbody>
+  
+  <tfoot class="gt_footnotes">
+    <tr>
+      <td class="gt_footnote" colspan="4"><sup class="gt_footnote_marks">1</sup> n (%); Median (IQR)</td>
+    </tr>
+  </tfoot>
+</table>
+</div>
+<p>Without weights, we are comparing 987 individuals to 113. The distributions among the two cities for each category does not seem the same, so comparisons are superficial at best. The distribution of coffee drunk by the Coffee Town residents is bimodal, divided between no coffee consumption and more extreme 4 cup habits. However, both of these consumption levels account for a small proportion of the overall population. Coffee Town residents have a larger spread of ages, which suggests that there are more generations present. Coffee Town seems to be populated with no or small job difficulty, while the non exposure has easy and hard jobs. The smoking distributions are more difficult to compare.</p>
+</div>
+</div>
+<div id="exercise-3" class="section level2">
+<h2>Exercise 3</h2>
+<div id="fit-a-propensity-score-model-using-the-dag-provided.-examine-the-distribution-of-propensity-scores-by-exposure-group.-what-do-you-see" class="section level3">
+<h3>Fit a propensity score model using the DAG provided. Examine the distribution of propensity scores by exposure group. What do you see?</h3>
+<pre class="r"><code># get propensity scores and add them to df
+
+# glm for unweighted
+glm1 = glm(coffee_town ~ age + job + smoke,
+           data = ctdata,
+           family = binomial())
+
+# adding propensity score to df
+ctdata = glm1 %&gt;% augment(type.predict = &quot;response&quot;,
+          data = ctdata)
+
+# prepare data for mirror plot
+df_plot_ps = ctdata %&gt;%
+  tidyr::pivot_wider(names_from = coffee_town,
+                     values_from = .fitted,
+                     names_prefix = &quot;coffee_town_p&quot;)</code></pre>
+<pre class="r"><code># plot
+ggplot(df_plot_ps)+
+  geom_histogram(bins = 25,
+                 aes(x = coffee_town_p1),
+                 fill = &quot;burlywood&quot;)+
+  geom_histogram(bins = 25,
+                 aes(x = coffee_town_p0,
+                     y = -stat(count)),
+                 fill = &quot;dark red&quot;)+
+  scale_y_continuous(&quot;count&quot;, label = abs) + 
+  scale_x_continuous(&quot;propensity score&quot;) +
+  geom_label(
+    label = &quot;Coffee Town Resident&quot;, 
+    # x and y gives where the label will land
+    x = 0.45,
+    y = 35,
+  ) + 
+  geom_label(
+    label = &quot;Non Coffee Town Resident&quot;,
+    x = 0.45, 
+    y = -65
+  ) + 
+  labs(title = &quot;Distributions of Coffee Town and Non-Coffee Town Residents&quot;)</code></pre>
+<p><img src="Analysis_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>The population of non-Coffee Town residents dwarfs that of Coffee Town. While there look to be two modes for each population on the left and center, Coffee Town’s distribution does not seem to reflect the third mode on the right.</p>
+</div>
+</div>
+<div id="exercise-4" class="section level2">
+<h2>Exercise 4</h2>
+<div id="the-coffee-company-researchers-have-asked-you-to-calculate-the-average-causal-effect-for-the-equipoise-population-that-is-the-population-of-individuals-who-reasonably-could-live-in-either-town.-calculate-an-appropriate-weight-based-on-this-question.-describe-the-causal-estimand-you-will-be-estimating-using-this-weight." class="section level3">
+<h3>The Coffee Company researchers have asked you to calculate the average causal effect for the “equipoise” population, that is the population of individuals who reasonably could live in either town. Calculate an appropriate weight based on this question. Describe the causal estimand you will be estimating using this weight.</h3>
+<pre class="r"><code># add ato weights to ctdata (orig df)
+ctdata = ctdata %&gt;%
+  mutate(wt_ato = (1-coffee_town)*.fitted + coffee_town * (1 -.fitted))</code></pre>
+<p>We will be estimating the Average Treatment Effect of the Overlap population. We are weighting individuals to reflect those in the middle or “overlap” of the two populations. We are trying to weight those who could reasonably live in either location highly, and give those with a strong proclivity for one location a near zero weight. We will then calculate the estimated average treatment effect among this population.</p>
+</div>
+</div>
+<div id="exercise-5" class="section level2">
+<h2>Exercise 5</h2>
+<div id="create-a-weighted-table-1-using-the-weight-in-the-previous-exercise.-compare-this-to-the-table-1-from-exercise-2." class="section level3">
+<h3>Create a weighted Table 1 using the weight in the previous exercise. Compare this to the Table 1 from Exercise 2.</h3>
+<pre class="r"><code># create survey object to contain weights
+svy_des_ato = svydesign(
+  ids = ~1,
+  data = ctdata,
+  weights = ~wt_ato
+)
+
+table1_ato = svy_des_ato %&gt;% 
+  tbl_svysummary(by = coffee_town,
+                 include = c(&quot;cups_of_coffee&quot;, &quot;age&quot;, &quot;job&quot;, &quot;smoke&quot;)) %&gt;%
+    add_overall()
+
+table1_ato</code></pre>
+<div id="fgquamjord" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#fgquamjord .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#fgquamjord .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#fgquamjord .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#fgquamjord .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#fgquamjord .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#fgquamjord .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#fgquamjord .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#fgquamjord .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#fgquamjord .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#fgquamjord .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#fgquamjord .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#fgquamjord .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#fgquamjord .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#fgquamjord .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#fgquamjord .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#fgquamjord .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#fgquamjord .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#fgquamjord .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#fgquamjord .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#fgquamjord .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#fgquamjord .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#fgquamjord .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#fgquamjord .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#fgquamjord .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#fgquamjord .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#fgquamjord .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#fgquamjord .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#fgquamjord .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#fgquamjord .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#fgquamjord .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#fgquamjord .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#fgquamjord .gt_left {
+  text-align: left;
+}
+
+#fgquamjord .gt_center {
+  text-align: center;
+}
+
+#fgquamjord .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#fgquamjord .gt_font_normal {
+  font-weight: normal;
+}
+
+#fgquamjord .gt_font_bold {
+  font-weight: bold;
+}
+
+#fgquamjord .gt_font_italic {
+  font-style: italic;
+}
+
+#fgquamjord .gt_super {
+  font-size: 65%;
+}
+
+#fgquamjord .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 75%;
+  vertical-align: 0.4em;
+}
+
+#fgquamjord .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#fgquamjord .gt_slash_mark {
+  font-size: 0.7em;
+  line-height: 0.7em;
+  vertical-align: 0.15em;
+}
+
+#fgquamjord .gt_fraction_numerator {
+  font-size: 0.6em;
+  line-height: 0.6em;
+  vertical-align: 0.45em;
+}
+
+#fgquamjord .gt_fraction_denominator {
+  font-size: 0.6em;
+  line-height: 0.6em;
+  vertical-align: -0.05em;
+}
+</style>
+<table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1"><strong>Characteristic</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"><strong>Overall</strong>, N = 182<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"><strong>0</strong>, N = 91<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"><strong>1</strong>, N = 91<sup class="gt_footnote_marks">1</sup></th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_left">cups_of_coffee</td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">0</td>
+<td class="gt_row gt_center">45 (25%)</td>
+<td class="gt_row gt_center">10 (11%)</td>
+<td class="gt_row gt_center">36 (39%)</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">1</td>
+<td class="gt_row gt_center">9 (4.7%)</td>
+<td class="gt_row gt_center">9 (9.4%)</td>
+<td class="gt_row gt_center">0 (0%)</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">2</td>
+<td class="gt_row gt_center">38 (21%)</td>
+<td class="gt_row gt_center">38 (42%)</td>
+<td class="gt_row gt_center">0 (0%)</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">3</td>
+<td class="gt_row gt_center">34 (19%)</td>
+<td class="gt_row gt_center">32 (35%)</td>
+<td class="gt_row gt_center">2 (2.0%)</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">4</td>
+<td class="gt_row gt_center">52 (29%)</td>
+<td class="gt_row gt_center">3 (3.4%)</td>
+<td class="gt_row gt_center">49 (54%)</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">5</td>
+<td class="gt_row gt_center">4 (1.9%)</td>
+<td class="gt_row gt_center">0 (0%)</td>
+<td class="gt_row gt_center">4 (3.9%)</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">6</td>
+<td class="gt_row gt_center">1 (0.5%)</td>
+<td class="gt_row gt_center">0 (0%)</td>
+<td class="gt_row gt_center">1 (0.9%)</td></tr>
+    <tr><td class="gt_row gt_left">age</td>
+<td class="gt_row gt_center">41 (20, 50)</td>
+<td class="gt_row gt_center">39 (34, 43)</td>
+<td class="gt_row gt_center">50 (14, 52)</td></tr>
+    <tr><td class="gt_row gt_left">job</td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">easy</td>
+<td class="gt_row gt_center">96 (52%)</td>
+<td class="gt_row gt_center">48 (52%)</td>
+<td class="gt_row gt_center">48 (52%)</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">hard</td>
+<td class="gt_row gt_center">22 (12%)</td>
+<td class="gt_row gt_center">11 (12%)</td>
+<td class="gt_row gt_center">11 (12%)</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">none</td>
+<td class="gt_row gt_center">65 (35%)</td>
+<td class="gt_row gt_center">32 (35%)</td>
+<td class="gt_row gt_center">32 (35%)</td></tr>
+    <tr><td class="gt_row gt_left">smoke</td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">current</td>
+<td class="gt_row gt_center">4 (2.1%)</td>
+<td class="gt_row gt_center">2 (2.1%)</td>
+<td class="gt_row gt_center">2 (2.1%)</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">former</td>
+<td class="gt_row gt_center">7 (4.1%)</td>
+<td class="gt_row gt_center">4 (4.1%)</td>
+<td class="gt_row gt_center">4 (4.1%)</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">never</td>
+<td class="gt_row gt_center">171 (94%)</td>
+<td class="gt_row gt_center">86 (94%)</td>
+<td class="gt_row gt_center">86 (94%)</td></tr>
+  </tbody>
+  
+  <tfoot class="gt_footnotes">
+    <tr>
+      <td class="gt_footnote" colspan="4"><sup class="gt_footnote_marks">1</sup> n (%); Median (IQR)</td>
+    </tr>
+  </tfoot>
+</table>
+</div>
+<p>To compare the overlap population, the sample sizes are lower for both populations, with just 91 individuals apiece. The levels of coffee consumption for non Coffee Town residents is still a more gradual distribution, whereas Coffee Town still seems to drink no coffee at all or a considerable amount. The job intensities appear distributed equally among the two populations, as does smoking.</p>
+</div>
+</div>
+<div id="exercise-6" class="section level2">
+<h2>Exercise 6</h2>
+<div id="examine-the-distribution-of-propensity-score-between-the-two-groups-weighted-by-the-weight-chosen-in-exercise-4.-create-a-plot-to-show-this.-make-sure-your-plot-is-presentation-ready-axis-labels-clear-legend-description-or-labels-to-describe-histograms-if-histograms-overlap-too-much-make-sure-to-mirror-them-etc.-what-do-you-notice-describe-the-plot." class="section level3">
+<h3>Examine the distribution of propensity score between the two groups, weighted by the weight chosen in Exercise 4. Create a plot to show this. Make sure your plot is “presentation ready” (axis labels, clear legend description or labels to describe histograms, if histograms overlap too much make sure to mirror them, etc.) What do you notice? Describe the plot.</h3>
+<pre class="r"><code># mirrored histogram!
+ggplot(df_plot_ps)+
+  geom_histogram(bins = 25,
+                 aes(x = coffee_town_p1),
+                 fill = &quot;burlywood&quot;)+
+  geom_histogram(bins = 25,
+                 alpha = .5,
+                 aes(x = coffee_town_p1,
+                     weight = ctdata$wt_ato),
+                 fill = &quot;chocolate&quot;)+
+  geom_histogram(bins = 25,
+                 aes(x = coffee_town_p0,
+                     y = -stat(count)),
+                 fill = &quot;dark red&quot;)+
+  geom_histogram(bins = 25,
+                 alpha = .5,
+                 aes(x = coffee_town_p0,
+                     y = -stat(count),
+                     weight = ctdata$wt_ato),
+                 fill = &quot;darkorange&quot;)+
+  scale_y_continuous(&quot;count&quot;, label = abs) + 
+  scale_x_continuous(&quot;propensity score&quot;) +
+  geom_label(
+    label = &quot;Coffee Town Resident&quot;, 
+    # x and y gives where the label will land
+    x = 0.45,
+    y = 35,
+  ) + 
+  geom_label(
+    label = &quot;Non Coffee Town Resident&quot;,
+    x = 0.45, 
+    y = -65
+  ) + 
+  labs(title = &quot;Distributions of Coffee Town and Non-Coffee Town Residents&quot;)</code></pre>
+<p><img src="Analysis_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>To capture the overlap population, it seems that individuals from both towns were down-weighted. There are few that could likely belong to both populations. In order to see the results of the weighting, the following histogram displays only the weighted propensity scores.</p>
+<pre class="r"><code># Weighted only hist, base model
+ggplot(df_plot_ps)+
+  geom_histogram(bins = 25,
+                 aes(x = coffee_town_p1,
+                     weight = ctdata$wt_ato),
+                 fill = &quot;burlywood&quot;)+
+  geom_histogram(bins = 25,
+                 aes(x = coffee_town_p0,
+                     y = -stat(count),
+                     weight = ctdata$wt_ato),
+                 fill = &quot;darkred&quot;)+
+  scale_y_continuous(&quot;count&quot;, label = abs) + 
+  scale_x_continuous(&quot;propensity score&quot;) +
+  geom_label(
+    label = &quot;Coffee Town Residents&quot;, 
+    # x and y gives where the label will land
+    x = 0.5,
+    y = 22,
+  ) + 
+  geom_label(
+    label = &quot;Non Coffee Town Residents&quot;,
+    x = 0.5, 
+    y = -20
+  ) + 
+  labs(title = &quot;Distributions of Weighted Coffee Town and Non-Coffee Town Residents&quot;)</code></pre>
+<p><img src="Analysis_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>The counts for both populations are considerably smaller. The distributions are more similar than before, but still distinctly different.</p>
+</div>
+</div>
+<div id="exercise-6-1" class="section level2">
+<h2>Exercise 6</h2>
+<div id="create-a-love-plot-comparing-the-weighted-and-unweighted-standardized-mean-differences.-describe-what-you-see." class="section level3">
+<h3>Create a Love Plot comparing the weighted and unweighted standardized mean differences. Describe what you see.</h3>
+<pre class="r"><code># add smds to model
+smds = ctdata %&gt;% 
+  summarise(
+    across(
+      c(age, job, smoke),
+      list(unweighted = ~smd(.x, coffee_town)$estimate,
+           ato.weighted = ~smd(.x, coffee_town, wt_ato)$estimate)
+    )
+    
+  )
+
+plot_df_smds = smds %&gt;%
+  pivot_longer(
+    everything(),
+    values_to = &quot;SMD&quot;,
+    names_to = c(&quot;variable&quot;, &quot;Method&quot;),
+    names_pattern = &quot;(.*)_(.*)&quot;
+  )%&gt;%
+  arrange(desc(Method), abs(SMD)) %&gt;%
+  mutate(variable = fct_inorder(variable))
+
+ggplot(
+  data = plot_df_smds,
+  aes(x = abs(SMD), y = variable,
+      group = Method, color = Method)
+)+
+  geom_line(orientation = &quot;y&quot;)+
+  geom_point()+
+  geom_vline(xintercept = .1,
+             color = &quot;black&quot;, size = .1)+
+  ggtitle(&quot;Love Plot ATO vs. Unweighted&quot;)</code></pre>
+<p><img src="Analysis_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>The Standardized Mean Difference (SMD) of the ATO weighted is balanced, all falling in line below the rule of thumb 0.1 mark. The unweighted is unbalanced, especially in terms of “job”.</p>
+</div>
+</div>
+<div id="exercise-8" class="section level2">
+<h2>Exercise 8</h2>
+<div id="create-unweighted-and-weighted-ecdf-plots-for-all-continuous-confounders.-describe-what-you-see." class="section level3">
+<h3>Create unweighted and weighted eCDF plot(s) for all continuous confounders. Describe what you see.</h3>
+<pre class="r"><code># create unweighted CDF for age
+ggplot(ctdata, 
+       aes(x = age, group = coffee_town,
+           color=factor(coffee_town)))+
+  stat_ecdf()+
+  scale_color_manual(&quot;Coffee Town Resident&quot;,
+                     values = c(&quot;Blue&quot;, &quot;Brown&quot;),
+                     labels = c(&quot;No&quot;, &quot;Yes&quot;))+
+  scale_x_continuous(&quot;Age&quot;)+
+  ylab(&quot;Proportion = x&quot;)+
+  ggtitle(&quot;Unweighted ECDF for Age&quot;)</code></pre>
+<p><img src="Analysis_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<pre class="r"><code># create weighted CDF for age
+# df for exposed
+ecdf_1 &lt;- ctdata %&gt;%
+  filter(coffee_town == 1) %&gt;%
+  arrange(age) %&gt;%
+  mutate(cum_pct = cumsum(wt_ato) / sum(wt_ato))
+
+# df for unexposed
+ecdf_0 &lt;- ctdata %&gt;%
+  filter(coffee_town == 0) %&gt;%
+  arrange(age) %&gt;%
+  mutate(cum_pct = cumsum(wt_ato) / sum(wt_ato))
+
+# plot
+ggplot(ecdf_1, aes(x = age, y = cum_pct)) +
+  geom_line(color = &quot;Brown&quot;) +
+  scale_color_manual(&quot;Coffee Town Resident&quot;,
+                     values = c(&quot;Blue&quot;, &quot;Brown&quot;),
+                     labels = c(&quot;No&quot;, &quot;Yes&quot;))+
+  geom_line(data = ecdf_0, 
+            aes(x = age, y = cum_pct), 
+            color = &quot;Blue&quot;) + 
+  xlab(&quot;Age&quot;) + 
+  ylab(&quot;Proportion &lt;= x&quot;)+
+  ggtitle(&quot;Weighted ECDF for Age&quot;)</code></pre>
+<p><img src="Analysis_files/figure-html/unnamed-chunk-11-2.png" width="672" /></p>
+<p>In both the unweighted and weighted ECDF plots, the lines cross around age 38. There seems to be a higher proportion of younger individuals (below 38 years) in Coffee Town, and a higher proportion of older (more than 38 years) outside of Coffee Town. In any case, they are different distributions and weighting does not seem to solve this issue. This means that, although the populations have been balanced on the mean of age with weighting, there is likely not a linear relationship with age.</p>
+</div>
+</div>
+<div id="exercise-9" class="section level2">
+<h2>Exercise 9</h2>
+<div id="based-on-exercises-6-and-7-refit-your-propensity-score-model-if-necessary.-recreate-the-weighted-histograms-love-plot-and-ecdf-plots-for-your-new-propensity-score-model-iterating-until-you-are-satisfied-with-the-result.-if-you-dont-think-you-need-to-make-any-changes-describe-why-not." class="section level3">
+<h3>Based on Exercises 6 and 7, refit your propensity score model if necessary. Recreate the weighted histograms, Love Plot, and eCDF plots for your new propensity score model (iterating until you are satisfied with the result). If you don’t think you need to make any changes describe why not.</h3>
+<pre class="r"><code>ctdata2 = glm(coffee_town ~ job + smoke + splines::ns(age, 3),
+           data = ctdata,
+           family = binomial())%&gt;% 
+  augment(type.predict = &quot;response&quot;,
+          data = ctdata) %&gt;%
+  mutate(wt_ato = (1-coffee_town)*.fitted + coffee_town * (1 -.fitted))
+
+# prepare data for mirror plot
+df_plot_ps2 = ctdata2 %&gt;%
+  tidyr::pivot_wider(names_from = coffee_town,
+                     values_from = .fitted,
+                     names_prefix = &quot;coffee_town_p&quot;)</code></pre>
+<p>The previous ECDF plots indicated a possible non-linearity that was not captured in the model. Furthermore, the histogram, even after weighting, showed incomparable distributions. A natural spline with 3 degrees was added for our continuous variable “age” to resolve these issues.</p>
+<p>With the spline, the mode of the non Coffee Town residents has exploded. Once again the weighting was hardly visible when the original distributions were also plotted, so there is a separate histogram with just the weighted propensity scores under the new model. We see, again, that individuals have been down weighted but the distributions are more reflective of each other.</p>
+<pre class="r"><code>ggplot(df_plot_ps2)+
+  geom_histogram(bins = 25,
+                 aes(x = coffee_town_p1),
+                 fill = &quot;burlywood&quot;)+
+  geom_histogram(bins = 25,
+                 alpha = .5,
+                 aes(x = coffee_town_p1,
+                     weight = ctdata2$wt_ato),
+                 fill = &quot;chocolate&quot;)+
+  geom_histogram(bins = 25,
+                 aes(x = coffee_town_p0,
+                     y = -stat(count)),
+                 fill = &quot;darkred&quot;)+
+  geom_histogram(bins = 25,
+                 alpha = .5,
+                 aes(x = coffee_town_p0,
+                     y = -stat(count),
+                     weight = ctdata2$wt_ato),
+                 fill = &quot;darkorange&quot;)+
+  scale_y_continuous(&quot;count&quot;, label = abs) + 
+  scale_x_continuous(&quot;propensity score&quot;) +
+  geom_label(
+    label = &quot;Coffee Town Residents&quot;, 
+    # x and y gives where the label will land
+    x = 0.4,
+    y = 40,
+  ) + 
+  geom_label(
+    label = &quot;Non Coffee Town Residents&quot;,
+    x = 0.4, 
+    y = -75
+  ) + 
+  labs(title = &quot;Distributions of Coffee Town and Non-Coffee Town Residents, New Model&quot;)</code></pre>
+<p><img src="Analysis_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<pre class="r"><code>ggplot(df_plot_ps2)+
+  geom_histogram(bins = 25,
+                 aes(x = coffee_town_p1,
+                     weight = ctdata2$wt_ato),
+                 fill = &quot;burlywood&quot;)+
+  geom_histogram(bins = 25,
+                 aes(x = coffee_town_p0,
+                     y = -stat(count),
+                     weight = ctdata2$wt_ato),
+                 fill = &quot;darkred&quot;)+
+  scale_y_continuous(&quot;count&quot;, label = abs) + 
+  scale_x_continuous(&quot;propensity score&quot;) +
+  geom_label(
+    label = &quot;Coffee Town Residents&quot;, 
+    # x and y gives where the label will land
+    x = 0.9,
+    y = 2.75,
+  ) + 
+  geom_label(
+    label = &quot;Non Coffee Town Residents&quot;,
+    x = 0.9, 
+    y = -2.75
+  ) + 
+  labs(title = &quot;Distributions of Weighted Coffee Town and Non-Coffee Town Residents, New Model&quot;)</code></pre>
+<p><img src="Analysis_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<pre class="r"><code># Love Plot for updated model
+# add smds to model
+smds2 = ctdata2 %&gt;% 
+  summarise(
+    across(
+      c(age, job, smoke),
+      list(unweighted = ~smd(.x, coffee_town)$estimate,
+           ato.weighted = ~smd(.x, coffee_town, wt_ato)$estimate)
+    )
+  )
+
+plot_df_smds2 = smds2 %&gt;%
+  pivot_longer(
+    everything(),
+    values_to = &quot;SMD&quot;,
+    names_to = c(&quot;variable&quot;, &quot;Method&quot;),
+    names_pattern = &quot;(.*)_(.*)&quot;
+  )%&gt;%
+  arrange(desc(Method), abs(SMD)) %&gt;%
+  mutate(variable = fct_inorder(variable))
+
+ggplot(
+  data = plot_df_smds2,
+  aes(x = abs(SMD), y = variable,
+      group = Method, color = Method)
+)+
+  geom_line(orientation = &quot;y&quot;)+
+  geom_point()+
+  geom_vline(xintercept = .1,
+             color = &quot;black&quot;, size = .1)+
+  ggtitle(&quot;Love Plot ATO vs. Unweighted&quot;)</code></pre>
+<p><img src="Analysis_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p>The new model’s Love Plot looks almost identical to the original model’s Love Plot. Weighting balanced the variables.</p>
+<pre class="r"><code># create unweighted CDF for age
+ggplot(ctdata2, 
+       aes(x = age, group = coffee_town,
+           color=factor(coffee_town)))+
+  stat_ecdf()+
+  scale_color_manual(&quot;Coffee Town Resident&quot;,
+                     values = c(&quot;Blue&quot;, &quot;Brown&quot;),
+                     labels = c(&quot;No&quot;, &quot;Yes&quot;))+
+  scale_x_continuous(&quot;Age&quot;)+
+  ylab(&quot;Proportion = x&quot;)+
+  ggtitle(&quot;Unweighted ECDF for Age&quot;)</code></pre>
+<p><img src="Analysis_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<pre class="r"><code># create weighted CDF for age 
+
+# df for exposed
+ecdf_1 &lt;- ctdata2 %&gt;%
+  filter(coffee_town == 1) %&gt;%
+  arrange(age) %&gt;%
+  mutate(cum_pct = cumsum(wt_ato) / sum(wt_ato))
+
+# df for unexposed
+ecdf_0 &lt;- ctdata2 %&gt;%
+  filter(coffee_town == 0) %&gt;%
+  arrange(age) %&gt;%
+  mutate(cum_pct = cumsum(wt_ato) / sum(wt_ato))
+
+# plot
+ggplot(ecdf_1, aes(x = age, y = cum_pct)) +
+  geom_line(color = &quot;Brown&quot;) +
+  scale_color_manual(&quot;Coffee Town Resident&quot;,
+                     values = c(&quot;Blue&quot;, &quot;Brown&quot;),
+                     labels = c(&quot;No&quot;, &quot;Yes&quot;))+
+  geom_line(data = ecdf_0, 
+            aes(x = age, y = cum_pct), 
+            color = &quot;Blue&quot;) + 
+  xlab(&quot;Age&quot;) + 
+  ylab(&quot;Proportion &lt;= x&quot;)+
+  ggtitle(&quot;Weighted ECDF&quot;)</code></pre>
+<p><img src="Analysis_files/figure-html/unnamed-chunk-16-2.png" width="672" /></p>
+<p>With our updated model, the unweighted ages still show different distributions in the ECDF. However, the weights seem to make the distributions very similar.</p>
+</div>
+</div>
+<div id="exercise-10" class="section level2">
+<h2>Exercise 10</h2>
+<div id="estimate-the-average-causal-effect-using-your-final-propensity-score-model-and-weight.-explain-what-this-means-in-words." class="section level3">
+<h3>Estimate the average causal effect using your final propensity score model and weight. Explain what this means in words.</h3>
+<pre class="r"><code>ctdata2 %&gt;% 
+  summarise(
+    ato = sum(cups_of_coffee * coffee_town * wt_ato) / 
+      sum(coffee_town * wt_ato) - 
+      sum(cups_of_coffee * (1 - coffee_town) * wt_ato) /
+      sum((1 - coffee_town) * wt_ato))</code></pre>
+<pre><code>## # A tibble: 1 × 1
+##        ato
+##      &lt;dbl&gt;
+## 1 -0.00685</code></pre>
+<p>Among people who do not have a town preference, the exposure of of Coffee Town causes an average daily consumption of .006 fewer cups of coffee than non-Coffee Town residents. Since the marginal rate is near zero, there is no real causal effect.</p>
+</div>
+</div>
+<div id="bonus" class="section level2">
+<h2>Bonus</h2>
+<div id="the-average-causal-effect-in-exercise-10-is-a-point-estimate.-ultimately-we-are-interested-in-additionally-quantifying-the-uncertainty.-describe-how-you-might-estimate-the-uncertainty-bounds-for-this-estimate." class="section level3">
+<h3>The average causal effect in exercise 10 is a point estimate. Ultimately, we are interested in additionally quantifying the uncertainty. Describe how you might estimate the uncertainty bounds for this estimate.</h3>
+<p>We need to understand the distribution in order to quantify uncertainty. Changing the weights will likely change the distribution and therefore the standard error. One way to estimate the new standard error is to simulate data with a bootstrap. In this we resample the original data with replacement, run propsenity score models, weight, and produce and save an estimate thousands of times. We would then have a distribution of estimates and could identify the appropriate parameter estimates. With these, we could produce a legitimate confidence interval.</p>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
